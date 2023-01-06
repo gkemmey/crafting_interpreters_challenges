@@ -1,0 +1,10 @@
+require "rake/clean"
+CLEAN.include("*.out")
+
+rule ".out" => ".c" do |t|
+  sh "gcc #{t.source}", verbose: false
+end
+
+task run: Rake::FileList.new("*.c").ext(".out") do |t|
+  sh "./a.out", verbose: false
+end
