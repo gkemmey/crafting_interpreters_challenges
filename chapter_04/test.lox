@@ -1,0 +1,10 @@
+// a comment
+print "test";
+
+print "foo";
+
+/*
+  a multi-line comment
+*/
+
+"an unterminated string error

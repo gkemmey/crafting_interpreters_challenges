@@ -1,0 +1,12 @@
+require "rake/clean"
+CLEAN.include("*.class")
+
+ROOT = File.expand_path("..", __FILE__)
+
+rule ".class" => ".java" do |t|
+  sh "javac -cp #{ROOT} -Werror -implicit:none #{t.source}"
+end
+
+task run: Rake::FileList.new("**/*.java").ext(".class") do |t|
+  sh "java -cp #{ROOT} com/craftinginterpreters/lox/Lox #{ARGV[1]}"
+end

@@ -1,0 +1,25 @@
+fun floor(n) { // only works on positive n
+  var m = 0;
+  while (m <= n) { m = m + 1; }
+
+  return m - 1;
+}
+
+fun mod(c, m) { // only works on positive c
+  return c - (m * floor(c / m));
+}
+
+for (var i = 0; i < 31; i = i + 1) {
+  if (mod(i, 5) == 0 and mod(i, 3) == 0) {
+    print "fizzbuzz";
+  }
+  else if (mod(i, 5) == 0) {
+    print "fizz";
+  }
+  else if (mod(i, 3) == 0) {
+    print "buzz";
+  }
+  else {
+    print i;
+  }
+}
