@@ -169,8 +169,9 @@ class Scanner {
       return;
     }
 
-    if (peekNext() == '/') {
-      advance(); // consume the *
+    advance(); // consume the *
+
+    if (peek() == '/') {
       advance(); // consume the /
     } else {
       comment();
