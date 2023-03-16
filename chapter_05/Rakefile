@@ -1,0 +1,37 @@
+require "rake/clean"
+CLEAN.include("**/*.class")
+
+ROOT = File.expand_path("..", __FILE__)
+
+rule ".class" => ".java" do |t|
+  sh "javac -cp #{ROOT} -Werror -implicit:none #{t.source}"
+end
+
+# ---- generated classes ----
+
+file "com/craftinginterpreters/lox/Expr.java" => "com/craftinginterpreters/tool/GenerateAst.class" do |t|
+  sh "java -cp #{ROOT} com/craftinginterpreters/tool/GenerateAst com/craftinginterpreters/lox"
+end
+
+# ---- builders ----
+
+task build_generated_classes: ["com/craftinginterpreters/lox/Expr.java"]
+task compile_java_files: Rake::FileList.new("**/*.java").ext(".class")
+
+task build: [:build_generated_classes, :compile_java_files]
+
+# ---- runners ----
+
+task run: [:build] do |t|
+  sh "java -cp #{ROOT} com/craftinginterpreters/lox/Lox #{ARGV[1]}"
+end
+
+namespace :test do
+  task ast: [:build] do |t|
+    sh "java -cp #{ROOT} com/craftinginterpreters/lox/AstPrinter"
+  end
+
+  task rpn: [:build] do |t|
+    sh "java -cp #{ROOT} com/craftinginterpreters/lox/RpnPrinter"
+  end
+end
